@@ -2,12 +2,17 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from io import BytesIO
 from idf_core import processar_idf
 
 #Leitura fixa da planilha de coeficientes
+# Caminho robusto para a planilha
+caminho_coef = os.path.join(os.path.dirname(__file__), "coeficientes.xlsx")
+
+
 try:
-    df_coef = pd.read_excel("Coeficientes.xlsx")
+    df_coef = pd.read_excel(caminho_coef)
     lista_colunas = df_coef.loc[:'NOME MUNIC']
 
 except Exception as e:
