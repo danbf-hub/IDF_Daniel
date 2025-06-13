@@ -12,8 +12,15 @@ caminho_coef = os.path.join(os.path.dirname(__file__), "coeficientes.xlsx")
 
 
 try:
-    df_coef = pd.read_excel(caminho_coef)
-    lista_colunas = df_coef.loc[:'NOME MUNIC']
+    df_coef = pd.read_excel("Coeficientes.xlsx")
+
+    # Remove linhas em branco e padroniza texto
+    df_coef = df_coef.dropna(subset=["UF", "NOME MUNIC"])
+    df_coef["UF"] = df_coef["UF"].astype(str).str.strip().str.upper()
+    df_coef["NOME MUNIC"] = df_coef["NOME MUNIC"].astype(str).str.strip()
+
+    # Lista única de estados
+    ufs_disponiveis = sorted(df_coef["UF"].unique())
 
 except Exception as e:
     st.error(f"Erro ao carregar a planilha de coeficientes fixa: {e}")
@@ -74,13 +81,24 @@ tipo_dado = st.radio(
     horizontal=True
 )
 
-# Passo 3 - Nome do município
-municipio = st.selectbox(
-    label = "Digite o nome do município (com acentos)",
-    options = lista_colunas,
-    index=None,
-
+# Passo 3 - Sigla do estado
+estado = st.selectbox(
+    label="Selecione a UF (sigla do estado)",
+    options=ufs_disponiveis,
+    index=None
 )
+
+# Passo 4 - Nome do município
+municipios_filtrados = []
+if estado:
+    municipios_filtrados = sorted(df_coef[df_coef["UF"] == estado]["NOME MUNIC"].unique())
+
+municipio = st.selectbox(
+    label="Selecione o município",
+    options=municipios_filtrados,
+    index=None
+)
+
 # Diagnóstico
 if arquivo_chuvas is not None:
     st.header("3. Diagnóstico dos dados de chuva (antes da análise)")
