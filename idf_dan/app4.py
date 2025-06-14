@@ -8,11 +8,11 @@ from idf_core import processar_idf
 
 #Leitura fixa da planilha de coeficientes
 # Caminho robusto para a planilha
-caminho_coef = os.path.join(os.path.dirname(__file__), "coeficientes.xlsx")
+caminho_coef = os.path.join(os.path.dirname(__file__), "Coeficientes.xlsx")
 
 
 try:
-    df_coef = pd.read_excel("coeficientes.xlsx")
+    df_coef = pd.read_excel("Coeficientes.xlsx")
 
     # Remove linhas em branco e padroniza texto
     df_coef = df_coef.dropna(subset=["UF", "NOME MUNIC"])
