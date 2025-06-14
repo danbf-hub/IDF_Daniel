@@ -12,7 +12,7 @@ caminho_coef = os.path.join(os.path.dirname(__file__), "Coeficientes.xlsx")
 
 
 try:
-    df_coef = pd.read_excel("Coeficientes.xlsx")
+    df_coef = pd.read_excel(caminho_coef)
 
     # Remove linhas em branco e padroniza texto
     df_coef = df_coef.dropna(subset=["UF", "NOME MUNIC"])
